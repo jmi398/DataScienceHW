@@ -104,6 +104,7 @@ show tables;
 select title,  language_id from film
 where title LIKE "K%" OR title LIKE "Q%" and language_id = "1";
 
+
 -- 7b. Use subqueries to display all actors who appear in the film Alone Trip
 select first_name, last_name from actor where actor_id in (
 select actor_id from film_actor where film_id in
@@ -127,11 +128,15 @@ select film_id from film_category where category_id in (
 select category_id from category where name = "Family"));
 
 -- 7e. Display the most frequently rented movies in descending order. * Check with Seth
-
- SELECT count(inventory.inventory_id), film.title FROM film 
- INNER JOIN inventory ON inventory.film_id= film.film_id GROUP BY film.title 
- ORDER BY count(inventory.inventory_id)  DESC;
-
+select * from film;
+select * from rental;
+select * from inventory;
+ 
+ SELECT  film.title, count(rental.rental_id) as 'Number of times the movie was rented'FROM rental 
+JOIN inventory ON rental.inventory_id= inventory.inventory_id 
+JOIN film ON film.film_id =  inventory.film_id GROUP BY film.title
+ORDER BY count(rental.rental_id)  DESC;
+ 
 -- 7f. Write a query to display how much business, in dollars, each store brought in.* Check with Seth
 
 SELECT store.store_id, sum(payment.amount) as 'Business in dollars' from payment
